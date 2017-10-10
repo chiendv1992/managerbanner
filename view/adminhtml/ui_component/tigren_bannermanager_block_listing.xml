@@ -101,7 +101,7 @@
         </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>
-    <columns name="cms_block_columns">
+    <columns name="manager_block_columns">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="editorConfig" xsi:type="array">
@@ -200,7 +200,6 @@
                 </item>
             </argument>
         </column>
-      
         <column name="status">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

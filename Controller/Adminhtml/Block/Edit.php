@@ -28,6 +28,7 @@ class Edit extends \Magento\Backend\App\Action
 
     public function execute()
     {
+        
         // 1. Get ID and create model
         $block_id = $this->getRequest()->getParam('block_id');
         $model = $this->_objectManager->create('Tigren\BannerManager\Model\Block');

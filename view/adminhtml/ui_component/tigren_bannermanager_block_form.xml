@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">tigren_bannermanager_tigren_bannermanager_block_form.tigren_bannermanager_block_form_data_source</item>
-            <item name="deps" xsi:type="string">tigren_bannermanager_tigren_bannermanager_block_form.tigren_bannermanager_block_form_data_source</item>
+            <item name="provider" xsi:type="string">tigren_bannermanager_block_form.bannermanager_block_form_data_source</item>
+            <item name="deps" xsi:type="string">tigren_bannermanager_block_form.bannermanager_block_form_data_source</item>
         </item>
         <item name="label" xsi:type="string" translate="true">General Information</item>
         <item name="config" xsi:type="array">
             <item name="dataScope" xsi:type="string">data</item>
-            <item name="namespace" xsi:type="string">tigren_bannermanager_tigren_bannermanager_block_form</item>
+            <item name="namespace" xsi:type="string">tigren_bannermanager_block_form</item>
         </item>
         <item name="template" xsi:type="string">templates/form/collapsible</item>
         <item name="buttons" xsi:type="array">
@@ -19,10 +25,10 @@
             <item name="save_and_continue" xsi:type="string">Tigren\BannerManager\Block\Adminhtml\Block\Edit\SaveAndContinueButton</item>
         </item>
     </argument>
-    <dataSource name="tigren_bannermanager_block_form_data_source">
+    <dataSource name="bannermanager_block_form_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Magento\Cms\Model\Block\DataProvider</argument>
-            <argument name="name" xsi:type="string">tigren_bannermanager_block_form_data_source</argument>
+            <argument name="name" xsi:type="string">bannermanager_block_form_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">block_id</argument>
             <argument name="requestFieldName" xsi:type="string">block_id</argument>
             <argument name="data" xsi:type="array">
@@ -37,7 +43,7 @@
             </item>
         </argument>
     </dataSource>
-    <fieldset name="general">
+   <fieldset name="general">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="label" xsi:type="string"/>
@@ -92,21 +98,6 @@
                     <item name="source" xsi:type="string">manager_block</item>
                     <item name="dataScope" xsi:type="string">store_id</item>
                     <item name="default" xsi:type="string">0</item>
-                    <item name="validation" xsi:type="array">
-                        <item name="required-entry" xsi:type="boolean">true</item>
-                    </item>
-                </item>
-            </argument>
-        </field>
-        <field name="display">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string"/>
-                    <item name="formElement" xsi:type="string">wysiwyg</item>
-                    <item name="source" xsi:type="string">manager_block</item>
-                    <item name="wysiwyg" xsi:type="boolean">true</item>
-                    <item name="dataScope" xsi:type="string">display</item>
-                    <item name="additionalClasses" xsi:type="string">admin__field-wide</item>
                     <item name="validation" xsi:type="array">
                         <item name="required-entry" xsi:type="boolean">true</item>
                     </item>
@@ -205,6 +196,21 @@
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">manager_block</item>
                     <item name="dataScope" xsi:type="string">sort_order</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="content">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                    <item name="formElement" xsi:type="string">wysiwyg</item>
+                    <item name="source" xsi:type="string">block</item>
+                    <item name="wysiwyg" xsi:type="boolean">true</item>
+                    <item name="dataScope" xsi:type="string">content</item>
+                    <item name="additionalClasses" xsi:type="string">admin__field-wide</item>
                     <item name="validation" xsi:type="array">
                         <item name="required-entry" xsi:type="boolean">true</item>
                     </item>

@@ -1,16 +1,9 @@
 <?php
-/**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
+
 namespace Tigren\BannerManager\Block\Adminhtml\Block\Edit;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
-/**
- * Class SaveButton
- * @package Magento\Customer\Block\Adminhtml\Edit
- */
 class SaveButton extends GenericButton implements ButtonProviderInterface
 {
     /**

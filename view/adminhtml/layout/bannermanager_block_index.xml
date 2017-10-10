@@ -1,16 +1,12 @@
 <?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-    	<referenceBlock name='menu'>
-    		<action method='setActive'>
-    			<argument name='itemID' xsi:type='string'>Tigren_BannerManager:block</argument>
-    		</action>
-    	</referenceBlock>
-    	<referenceBlock name='page.title'>
-    		<action method='setPageTitle'>
-    			<argument name='pageTitle' xsi:type='string'>Block Manager</argument>
-    		</action>
-    	</referenceBlock>
         <referenceContainer name="content">
             <uiComponent name="tigren_bannermanager_block_listing"/>
         </referenceContainer>
