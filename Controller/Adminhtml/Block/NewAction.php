@@ -1,9 +1,4 @@
 <?php
-/**
- *
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 namespace Tigren\BannerManager\Controller\Adminhtml\Block;
 
 class NewAction extends \Magento\Backend\App\Action
@@ -21,7 +16,6 @@ class NewAction extends \Magento\Backend\App\Action
     }
     public function execute()
     {
-        
         // chuyển hướng trang
         $resultForward = $this->resultForwardFactory->create();
         return $resultForward->forward('edit');

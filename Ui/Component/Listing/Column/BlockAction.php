@@ -2,8 +2,9 @@
 namespace Tigren\BannerManager\Ui\Component\Listing\Column;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
+use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
-class BlockAction extends \Magento\Ui\Component\Listing\Columns\Column
+class BlockAction extends Column
 {
     const MANAGER_BLOCK_URL_PATH_EDIT = 'bannermanager/block/edit';
     const MANAGER_BLOCK_URL_PATH_DELETE = 'bannermanager/block/delete';

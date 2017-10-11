@@ -16,18 +16,17 @@ class PostDataProcessor
     public function validateRequireEntry(array $data)
     {
         $requiredFields = [
-            'title' => __('Title'),
+            'title' => __('Block Title'),
             'url' => __('URL'),
             'display' => __('Display'),
             'identifier' => __('Identifier'),
-            'link' => __('Link'),
             'descriotion' => __('Descriotion'),
             'status' => __('Status'),
-            'content' => __('Content'),
             'position' => __('Position'),
-            'images' => __('Image'),
-            'sort_order' => __('Sort_order'),
-            'status' => __('Status')
+            'image' => __('Images'),
+            'sort_order' => __('Sort order'),
+            'status' => __('Status'),
+            'content' => __('Content')
             
         ];
         $errorNo = true;

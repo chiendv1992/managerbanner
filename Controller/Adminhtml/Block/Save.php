@@ -47,9 +47,8 @@ class Save extends \Magento\Backend\App\Action
                 else
                     $data['images'] = null;
             }
-
             $model = $this->pageFactory->create();
-
+            // lấy dc data đăng
             $id = $this->getRequest()->getParam('block_id');
             if ($id) {
                 $model->load($id);
@@ -58,7 +57,7 @@ class Save extends \Magento\Backend\App\Action
             $model->setData($data);
 
             if (!$this->dataProcessor->validate($data)) {
-                return $resultRedirect->setPath('*/*/edit', ['block_id' => $model->getId(), '_current' => true]);
+                return $resultRedirect->setPath('bannermanager/*/edit', ['block_id' => $model->getId(), '_current' => true]);
             }
 
             try {
@@ -66,16 +65,16 @@ class Save extends \Magento\Backend\App\Action
                 $this->messageManager->addSuccess(__('You saved the block.'));
                 $this->dataPersistor->clear('manager_block');
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['block_id' => $model->getId(), '_current' => true]);
+                    return $resultRedirect->setPath('bannermanager/*/edit', ['block_id' => $model->getId(), '_current' => true]);
                 }
-                return $resultRedirect->setPath('*/*/');
+                return $resultRedirect->setPath('bannermanager/*/index');
             } catch (\Exception $e) {
                 $this->messageManager->addException($e, __('Something went wrong while saving the block.'));
             }
 
             $this->dataPersistor->set('manager_block', $data);
-            return $resultRedirect->setPath('*/*/edit', ['block_id' => $this->getRequest()->getParam('block_id')]);
+            return $resultRedirect->setPath('bannermanager/*/edit', ['block_id' => $this->getRequest()->getParam('block_id')]);
         }
-        return $resultRedirect->setPath('*/*/');
+        return $resultRedirect->setPath('bannermanager/*/index');
     }
 }

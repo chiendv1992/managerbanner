@@ -38,11 +38,11 @@ class Thumbnail extends \Magento\Ui\Component\Listing\Columns\Column
                         ) . 'bannermanager/images/' . $item[$fieldName];
                 }
 
-                // Add image with link and alternative text
+                // thêm link của ảnh dẫn đếm trang edit
                 $item[$fieldName . '_src'] = $url;
                 $item[$fieldName . '_alt'] = $item[$fieldName];
                 $item[$fieldName . '_link'] = $this->urlBuilder->getUrl(
-                    'bannermanager/block_id/edit',
+                    'bannermanager/block/edit',
                     ['block_id' => $item['block_id']]
                 );
                 $item[$fieldName . '_orig_src'] = $url;
