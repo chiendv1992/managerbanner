@@ -5,6 +5,7 @@ namespace Tigren\BannerManager\Controller\Adminhtml\Block;
 class Delete extends \Magento\Backend\App\Action
 {
     const ADMIN_RESOURCE = 'Tigren_BannerManager::block_delete';
+    
     public function execute()
     {
         $id = $this->getRequest()->getParam('block_id');

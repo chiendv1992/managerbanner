@@ -43,9 +43,20 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             return $this->loadedData;
         }
         $items = $this->collection->getItems();
-        foreach ($items as $block) {
-            $this->loadedData[$block->getId()] = $block->getData();
+
+       foreach ($items as $block) {
+            $data = $block->getData();
+            // $image = $data['image'];
+            // if ($image && is_string($image)) {
+            //     $data['images'][0]['name'] = $image;
+            //     $data['images'][0]['url'] = $this->storeManager->getStore()
+            //             ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
+            //         . 'manageblock/images/' . $image;
+            // }
+
+            $this->loadedData[$block->getId()] = $data;
         }
+
 
         $data = $this->dataPersistor->get('manager_block');
         if (!empty($data)) {

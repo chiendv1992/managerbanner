@@ -31,4 +31,27 @@
             </argument>
         </arguments>
     </type>
+
+
+    <!-- type  virtualType index class vao trong contructor xly ảnh -->
+    <type name="Tigren\BannerManager\Controller\Adminhtml\Block\Upload">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Tigren\BannerManager\BannerBlockImageUpload</argument>
+        </arguments>
+    </type>
+<!-- tao sub class cua model imageUploader truyền vào tham so   baseTmpPath va basePath -->
+    <virtualType name="Tigren\BannerManager\BannerBlockImageUpload" type="Magento\Catalog\Model\ImageUploader">
+        <arguments>
+            <!-- thu muc chứa tạm  ảnh của ng dùng up load -->
+            <argument name="baseTmpPath" xsi:type="string">managerblock/tmp/images</argument>
+            <!-- thư mục chứa ảnh thực khi nhấn save -->
+            <argument name="basePath" xsi:type="string">managerblock/images</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>

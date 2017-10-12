@@ -3,9 +3,6 @@ namespace Tigren\BannerManager\Model\ResourceModel\Block;
 
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
-    /**
-     * @var string
-     */
     protected $_idFieldName = 'block_id';
 
    

@@ -13,48 +13,28 @@ use Magento\Framework\EntityManager\MetadataPool;
 use Magento\Framework\EntityManager\EntityManager;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
-use Magento\Store\Model\Store;
-use Magento\Store\Model\StoreManagerInterface;
 
-/**
- * CMS block model
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 class Block extends AbstractDb
 {
-    /**
-     * Store manager
-     *
-     * @var StoreManagerInterface
-     */
-    protected $_storeManager;
-
-    	
-    /**
-     * @param Context $context
-     * @param StoreManagerInterface $storeManager
-     * @param EntityManager $entityManager
-     * @param MetadataPool $metadataPool
-     * @param string $connectionName
-     */
-    public function __construct(
-        Context $context,
-        StoreManagerInterface $storeManager,
-        $connectionName = null
-    ) {
-        $this->_storeManager = $storeManager;
-        parent::__construct($context, $connectionName);
-    }
-
-    /**
-     * Initialize resource model
-     *
-     * @return void
-     */
-    protected function _construct()
+   protected function _construct()
     {
+        // Table name + primary key column
         $this->_init('manager_block', 'block_id');
-        
     }
 
+    protected function _afterSave(\Magento\Framework\Model\AbstractModel $object)
+    {
+        // Get image data before and after save
+        $oldImage = $object->getOrigData('image');
+        $newImage = $object->getData('image');
+
+        // Check when new image uploaded
+        if ($newImage != null && $newImage != $oldImage) {
+            $imageUploader = \Magento\Framework\App\ObjectManager::getInstance()
+                ->get('Tigren\BannerBannerger\BannerBlockImageUpload');
+            $imageUploader->moveFileFromTmp($newImage);
+        }
+
+        return $this;
+    }
 }

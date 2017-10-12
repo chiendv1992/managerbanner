@@ -39,36 +39,42 @@ class Save extends \Magento\Backend\App\Action
             if (empty($data['block_id'])) {
                 $data['block_id'] = null;
             }
-            if (empty($data['image'])) {
-                $data['image'] = null;
-            } else {
-                if ($data['image'][0] && $data['image'][0]['name'])
-                    $data['images'] = $data['image'][0]['name'];
-                else
-                    $data['images'] = null;
-            }
-            $model = $this->pageFactory->create();
+            // 
+            // if (empty($data['images'])) {
+            //     $data['images'] = null;
+            // } else {
+            //     if ($data['images'][0] && $data['images'][0]['name'])
+            //         $data['image'] = $data['images'][0]['name'];
+            //     else
+            //         $data['image'] = null;
+            // }
+            $model = $this->_objectManager->create('Tigren\BannerManager\Model\Block');
             // lấy dc data đăng
             $id = $this->getRequest()->getParam('block_id');
             if ($id) {
                 $model->load($id);
             }
-
-            $model->setData($data);
-
-            if (!$this->dataProcessor->validate($data)) {
+           
+            // Validate data (dl đưa ra form)
+            if (!$this->dataProcessor->validateRequireEntry($data)) {
                 return $resultRedirect->setPath('bannermanager/*/edit', ['block_id' => $model->getId(), '_current' => true]);
             }
-
-            try {
+            // Update model
+            $model->setData($data);
+            // lưu dữ liệu vào database
+            try 
+            {
                 $model->save();
                 $this->messageManager->addSuccess(__('You saved the block.'));
                 $this->dataPersistor->clear('manager_block');
-                if ($this->getRequest()->getParam('back')) {
+                if ($this->getRequest()->getParam('back')) 
+                {
                     return $resultRedirect->setPath('bannermanager/*/edit', ['block_id' => $model->getId(), '_current' => true]);
                 }
                 return $resultRedirect->setPath('bannermanager/*/index');
-            } catch (\Exception $e) {
+            } 
+            catch (\Exception $e) 
+            {
                 $this->messageManager->addException($e, __('Something went wrong while saving the block.'));
             }
 
