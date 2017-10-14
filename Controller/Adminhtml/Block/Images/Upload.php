@@ -17,9 +17,7 @@ class Upload extends \Magento\Backend\App\Action
         $this->imageUploader = $imageUploader;
     }
 
-    /**
-     * Check admin permissions for this controller
-     */
+   // kiểm tra quyền quản trị 
     protected function _isAllowed()
     {
         return $this->_authorization->isAllowed('Tigren_BannerManager::save');
@@ -29,8 +27,9 @@ class Upload extends \Magento\Backend\App\Action
     {
         // Save image to temp folder
         try {
-        	// truyen vao tham so ở fiel ben form, khác vs tên cột databse
+        	// truyen vao tham so cua fiel ben form, khác vs tên cột databse
             $result = $this->imageUploader->saveFileToTmpDir('images');
+            
             $result['cookie'] = [
                 'name' => $this->_getSession()->getName(),
                 'value' => $this->_getSession()->getSessionId(),
@@ -44,4 +43,5 @@ class Upload extends \Magento\Backend\App\Action
         
         return $this->resultFactory->create(ResultFactory::TYPE_JSON)->setData($result);
     }
+
 }

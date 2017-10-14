@@ -23,7 +23,7 @@ class PostDataProcessor
             'descriotion' => __('Descriotion'),
             'status' => __('Status'),
             'position' => __('Position'),
-            'image' => __('Images'),
+            'image' => __('Image'),
             'sort_order' => __('Sort order'),
             'status' => __('Status'),
             'content' => __('Content')

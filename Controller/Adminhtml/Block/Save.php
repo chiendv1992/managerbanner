@@ -4,7 +4,6 @@ namespace Tigren\BannerManager\Controller\Adminhtml\Block;
 use Magento\Backend\App\Action;
 use Tigren\BannerManager\Model\Block;
 use Magento\Framework\App\Request\DataPersistorInterface;
-use Magento\Framework\Exception\LocalizedException;
 
 class Save extends \Magento\Backend\App\Action
 {
@@ -14,8 +13,6 @@ class Save extends \Magento\Backend\App\Action
     protected $dataProcessor;
 
     protected $dataPersistor;
-
-    private $pageFactory;
 
     public function __construct(
         Action\Context $context,
@@ -39,15 +36,16 @@ class Save extends \Magento\Backend\App\Action
             if (empty($data['block_id'])) {
                 $data['block_id'] = null;
             }
-            // 
-            // if (empty($data['images'])) {
-            //     $data['images'] = null;
-            // } else {
-            //     if ($data['images'][0] && $data['images'][0]['name'])
-            //         $data['image'] = $data['images'][0]['name'];
-            //     else
-            //         $data['image'] = null;
-            // }
+            // xly ảnh
+            if (empty($data['images'])) {
+                $data['images'] = null;
+            } else {
+                if ($data['images'][0] && $data['images'][0]['name'])
+                    $data['image'] = $data['images'][0]['name'];
+                else
+                    $data['image'] = null;
+            }
+
             $model = $this->_objectManager->create('Tigren\BannerManager\Model\Block');
             // lấy dc data đăng
             $id = $this->getRequest()->getParam('block_id');
@@ -57,7 +55,7 @@ class Save extends \Magento\Backend\App\Action
            
             // Validate data (dl đưa ra form)
             if (!$this->dataProcessor->validateRequireEntry($data)) {
-                return $resultRedirect->setPath('bannermanager/*/edit', ['block_id' => $model->getId(), '_current' => true]);
+                return $resultRedirect->setPath('*/*/edit', ['block_id' => $model->getId(), '_current' => true]);
             }
             // Update model
             $model->setData($data);
@@ -69,9 +67,9 @@ class Save extends \Magento\Backend\App\Action
                 $this->dataPersistor->clear('manager_block');
                 if ($this->getRequest()->getParam('back')) 
                 {
-                    return $resultRedirect->setPath('bannermanager/*/edit', ['block_id' => $model->getId(), '_current' => true]);
+                    return $resultRedirect->setPath('*/*/edit', ['block_id' => $model->getId(), '_current' => true]);
                 }
-                return $resultRedirect->setPath('bannermanager/*/index');
+                return $resultRedirect->setPath('*/*/');
             } 
             catch (\Exception $e) 
             {
@@ -79,8 +77,8 @@ class Save extends \Magento\Backend\App\Action
             }
 
             $this->dataPersistor->set('manager_block', $data);
-            return $resultRedirect->setPath('bannermanager/*/edit', ['block_id' => $this->getRequest()->getParam('block_id')]);
+            return $resultRedirect->setPath('*/*/edit', ['block_id' => $this->getRequest()->getParam('block_id')]);
         }
-        return $resultRedirect->setPath('bannermanager/*/index');
+        return $resultRedirect->setPath('*/*/');
     }
 }

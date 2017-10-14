@@ -31,7 +31,7 @@ class Block extends AbstractDb
         // Check when new image uploaded
         if ($newImage != null && $newImage != $oldImage) {
             $imageUploader = \Magento\Framework\App\ObjectManager::getInstance()
-                ->get('Tigren\BannerBannerger\BannerBlockImageUpload');
+                ->get('Tigren\BannerManager\BannerBlockImageUpload');
             $imageUploader->moveFileFromTmp($newImage);
         }
 
