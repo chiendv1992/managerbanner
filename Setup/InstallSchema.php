@@ -44,53 +44,17 @@ class InstallSchema implements InstallSchemaInterface
             ['nullable' => false],
             'Block Title'
         )->addColumn(
-            'url',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            255,
-            ['nullable' => false],
-            'Block URL'
-        )->addColumn(
-            'display',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            255,
-            ['nullable' => false],
-            'Block Display'
-        )->addColumn(
-            'identifier',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            255,
-            ['nullable' => false],
-            'Block String Identifier'
-        )->addColumn(
-            'descriotion',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            255,
-            ['nullable' => false],
-            'Block Descriotion'
-        )->addColumn(
-            'status',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            255,
-            ['nullable' => false],
-            'Block Status'
-        )->addColumn(
-            'content',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            255,
-            ['nullable' => false],
-            'Block Content'
-        )->addColumn(
             'position',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             255,
             ['nullable' => false],
             'Block Position'
         )->addColumn(
-            'image',
+            'display',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             255,
             ['nullable' => false],
-            'Block image'
+            'Block Display'
         )->addColumn(
             'sort_order',
             \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
@@ -110,7 +74,7 @@ class InstallSchema implements InstallSchemaInterface
             ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE],
             'Block Modification Time'
         )->addColumn(
-            'is_active',
+            'status',
             \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
             null,
             ['nullable' => false, 'default' => '1'],
@@ -118,24 +82,27 @@ class InstallSchema implements InstallSchemaInterface
         )->addIndex(
             $setup->getIdxName(
                 $installer->getTable('manager_block'),
-                ['title', 'identifier', 'content','position',],
+                ['title', 'position', 'display'],
                 AdapterInterface::INDEX_TYPE_FULLTEXT
             ),
-            ['title', 'identifier', 'content'],
+            ['title', 'position', 'display'],
             ['type' => AdapterInterface::INDEX_TYPE_FULLTEXT]
         )->setComment(
             ' Block Table'
         );
         $installer->getConnection()->createTable($table);
+
+
+
 // block_store
         $table = $installer->getConnection()->newTable(
-            $installer->getTable('manager_block_store')
+            $installer->getTable('block_store')
         )->addColumn(
             'block_id',
             \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
             null,
             ['nullable' => false, 'primary' => true],
-            'Page ID'
+            'Block ID'
         )->addColumn(
             'store_id',
             \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
@@ -143,16 +110,16 @@ class InstallSchema implements InstallSchemaInterface
             ['unsigned' => true, 'nullable' => false, 'primary' => true],
             'Store ID'
         )->addIndex(
-            $installer->getIdxName('manager_blockr_store', ['store_id']),
+            $installer->getIdxName('block_store', ['store_id']),
             ['store_id']
         )->addForeignKey(
-            $installer->getFkName('manager_blockr_store', 'block_id', 'manager_block', 'block_id'),
+            $installer->getFkName('block_store', 'block_id', 'manager_block', 'block_id'),
             'block_id',
             $installer->getTable('manager_block'),
             'block_id',
             \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
         )->addForeignKey(
-            $installer->getFkName('manager_blockr_store', 'store_id', 'store', 'store_id'),
+            $installer->getFkName('block_store', 'store_id', 'store', 'store_id'),
             'store_id',
             $installer->getTable('store'),
             'store_id',
@@ -174,61 +141,49 @@ class InstallSchema implements InstallSchemaInterface
             ['identity' => true, 'nullable' => false, 'primary' => true],
             'Banner ID'
         )->addColumn(
+            'block_id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+            null,
+            ['identity' => true, 'nullable' => false, 'primary' => true],
+            'Block ID'
+        )->addColumn(
             'title',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             255,
             ['nullable' => true],
             'Banner Title'
         )->addColumn(
-            'page_layout',
+            'image',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             255,
             ['nullable' => true],
-            'Banner Layout'
+            'Banner Image'
         )->addColumn(
-            'meta_keywords',
+            'url',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             '64k',
             ['nullable' => true],
-            'Banner Meta Keywords'
+            'Banner url'
         )->addColumn(
-            'meta_description',
+            'description',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             '64k',
             ['nullable' => true],
             'Banner Meta Description'
         )->addColumn(
-            'identifier',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            100,
-            ['nullable' => true, 'default' => null],
-            'Banner String Identifier'
-        )->addColumn(
-            'content_heading',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            255,
-            ['nullable' => true],
-            'Banner Content Heading'
-        )->addColumn(
-            'content',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            '2M',
-            [],
-            'Banner Content'
-        )->addColumn(
             'creation_time',
             \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
             null,
             ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
-            'Banner Creation Time'
+            'Banner Creation '
         )->addColumn(
             'update_time',
             \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
             null,
             ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE],
-            'Banner Modification Time'
+            'Banner Modification '
         )->addColumn(
-            'is_active',
+            'status',
             \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
             null,
             ['nullable' => false, 'default' => '1'],
@@ -240,90 +195,30 @@ class InstallSchema implements InstallSchemaInterface
             ['nullable' => false, 'default' => '0'],
             'Banner Sort Order'
         )->addColumn(
-            'layout_update_xml',
+            'target',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            '64k',
             ['nullable' => true],
-            'Banner Layout Update Content'
-        )->addColumn(
-            'custom_theme',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            100,
-            ['nullable' => true],
-            'Banner Custom Theme'
-        )->addColumn(
-            'custom_root_template',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            255,
-            ['nullable' => true],
-            'Banner Custom Template'
-        )->addColumn(
-            'custom_layout_update_xml',
-            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            '64k',
-            ['nullable' => true],
-            'Banner Custom Layout Update Content'
-        )->addColumn(
-            'custom_theme_from',
-            \Magento\Framework\DB\Ddl\Table::TYPE_DATE,
-            null,
-            ['nullable' => true],
-            'Banner Custom Theme Active From Date'
-        )->addColumn(
-            'custom_theme_to',
-            \Magento\Framework\DB\Ddl\Table::TYPE_DATE,
-            null,
-            ['nullable' => true],
-            'Banner Custom Theme Active To Date'
-        )->addIndex(
-            $installer->getIdxName('manager_banner', ['identifier']),
-            ['identifier']
+            'Target'
         )->addIndex(
             $setup->getIdxName(
                 $installer->getTable('manager_banner'),
-                ['title', 'meta_keywords', 'meta_description', 'identifier', 'content'],
+                ['title', 'image', 'url'],
                 AdapterInterface::INDEX_TYPE_FULLTEXT
             ),
-            ['title', 'meta_keywords', 'meta_description', 'identifier', 'content'],
+            ['title', 'image', 'url'],
             ['type' => AdapterInterface::INDEX_TYPE_FULLTEXT]
+        )->addForeignKey(
+            $installer->getFkName('manager_banner', 'block_id', 'manager_block', 'block_id'),
+            'block_id',
+            $installer->getTable('manager_block'),
+            'block_id',
+            \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
         )->setComment(
             ' Banner Table'
         );
         $installer->getConnection()->createTable($table);
 
-      $table = $installer->getConnection()->newTable(
-            $installer->getTable('manager_manager_store')
-        )->addColumn(
-            'banner_id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
-            null,
-            ['nullable' => false, 'primary' => true],
-            'Banner ID'
-        )->addColumn(
-            'store_id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
-            null,
-            ['unsigned' => true, 'nullable' => false, 'primary' => true],
-            'Store ID'
-        )->addIndex(
-            $installer->getIdxName('manager_manager_store', ['store_id']),
-            ['store_id']
-        )->addForeignKey(
-            $installer->getFkName('manager_manager_store', 'banner_id', 'manager_banner', 'banner_id'),
-            'banner_id',
-            $installer->getTable('manager_banner'),
-            'banner_id',
-            \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
-        )->addForeignKey(
-            $installer->getFkName('manager_manager_store', 'store_id', 'store', 'store_id'),
-            'store_id',
-            $installer->getTable('store'),
-            'store_id',
-            \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
-        )->setComment(
-            '   Store Linkage Table'
-        );
-        $installer->getConnection()->createTable($table);
+      
      
         
         $installer->endSetup();
