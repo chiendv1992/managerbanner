@@ -35,12 +35,6 @@ class InstallSchema implements InstallSchemaInterface
             ['identity' => true, 'nullable' => false, 'primary' => true],
             'Block ID'
         )->addColumn(
-            'customer_group_id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
-            null,
-            ['nullable' => false, 'primary' => true],
-            'Block ID'
-        )->addColumn(
             'title',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             255,
@@ -85,24 +79,55 @@ class InstallSchema implements InstallSchemaInterface
         )->addIndex(
             $setup->getIdxName(
                 $installer->getTable('manager_block'),
-                ['title', 'identifier', 'content'],
+                ['title', 'position', 'display'],
                 AdapterInterface::INDEX_TYPE_FULLTEXT
             ),
-            ['title', 'identifier', 'content'],
+            ['title', 'position', 'display'],
             ['type' => AdapterInterface::INDEX_TYPE_FULLTEXT]
+        )->setComment(
+            ' Block '
+        );
+        $installer->getConnection()->createTable($table);
+
+
+
+
+        $table = $installer->getConnection()->newTable(
+            $installer->getTable('block_customer_group')
+        )->addColumn(
+            'block_id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+            null,
+            ['nullable' => false, 'primary' => true],
+            'Block ID'
+        )->addColumn(
+            'customer_group_id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+            null,
+            ['unsigned' => true, 'nullable' => false, 'primary' => true],
+            'Customer Group ID'
+        )->addIndex(
+            $installer->getIdxName('block_customer_group', ['customer_group_id']),
+            ['customer_group_id']
         )->addForeignKey(
-            $installer->getFkName('manager_block', 'customer_group_id', 'customer_group', 'customer_group_id'),
+            $installer->getFkName('block_customer_group', 'block_id', 'manager_block', 'block_id'),
+            'block_id',
+            $installer->getTable('manager_block'),
+            'block_id',
+            \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+        )->addForeignKey(
+            $installer->getFkName('block_customer_group', 'customer_group_id', 'customer_group', 'customer_group_id'),
             'customer_group_id',
             $installer->getTable('customer_group'),
             'customer_group_id',
             \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
         )->setComment(
-            ' Block Table'
+            ' Block Customer Table'
         );
         $installer->getConnection()->createTable($table);
 
         /**
-         * Create table 'cms_block_store'
+         * Create table 'block_store'
          */
         $table = $installer->getConnection()->newTable(
             $installer->getTable('block_store')
@@ -124,7 +149,7 @@ class InstallSchema implements InstallSchemaInterface
         )->addForeignKey(
             $installer->getFkName('block_store', 'block_id', 'manager_block', 'block_id'),
             'block_id',
-            $installer->getTable('block'),
+            $installer->getTable('manager_block'),
             'block_id',
             \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
         )->addForeignKey(
