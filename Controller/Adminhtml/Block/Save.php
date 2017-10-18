@@ -36,15 +36,7 @@ class Save extends \Magento\Backend\App\Action
             if (empty($data['block_id'])) {
                 $data['block_id'] = null;
             }
-            // xly ảnh
-            if (empty($data['images'])) {
-                $data['images'] = null;
-            } else {
-                if ($data['images'][0] && $data['images'][0]['name'])
-                    $data['image'] = $data['images'][0]['name'];
-                else
-                    $data['image'] = null;
-            }
+            
 
             $model = $this->_objectManager->create('Tigren\BannerManager\Model\Block');
             // lấy dc data đăng

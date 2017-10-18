@@ -42,16 +42,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 
        foreach ($items as $block) {
             $data = $block->getData();
-
-            $image = $data['image'];
-            if ($image && is_string($image)) {
-                $data['images'][0]['name'] = $image;
-                // get store cung  cấp một đối tượng (đưa ra đường dẫn chứa ảnh) 
-                $data['images'][0]['url'] = $this->storeManager->getStore()
-                        ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
-                    .'bannermanager/images/' . $image;
-            }
-
+           
             $this->loadedData[$block->getId()] = $data;
         }
         $data = $this->dataPersistor->get('manager_block');
