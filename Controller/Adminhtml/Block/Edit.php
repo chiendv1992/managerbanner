@@ -1,13 +1,11 @@
 <?php
 namespace Tigren\BannerManager\Controller\Adminhtml\Block;
 use Magento\Backend\App\Action;
-class Edit extends \Magento\Backend\App\Action
+class Edit extends Action
 {
    
     protected $_coreRegistry;
-
     protected $resultPageFactory;
-
     public function __construct(
         Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
@@ -23,13 +21,12 @@ class Edit extends \Magento\Backend\App\Action
         $resultPage->setActiveMenu('Tigren_BannerManager::manager_block');
         return $resultPage;
     }
-
     public function execute()
     {
+        
         // 1. Get ID and create model
         $block_id = $this->getRequest()->getParam('block_id');
         $model = $this->_objectManager->create('Tigren\BannerManager\Model\Block');
-
         // 2. Initial checking
         if ($block_id) {
             $model->load($block_id);
@@ -39,12 +36,10 @@ class Edit extends \Magento\Backend\App\Action
                 return $resultRedirect->setPath('*/*/');
             }
         }
-
         $this->_coreRegistry->register('manager_block', $model);
         $resultPage = $this->_initAction();
         $resultPage->getConfig()->getTitle()
             ->prepend($model->getId() ? $model->getTitle() : __('New Block'));
-
         return $resultPage;
     }
 }

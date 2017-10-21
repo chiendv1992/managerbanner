@@ -1,11 +1,13 @@
-<?xml version="1.0"?>
-
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout='admin-2columns-left' xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <update handle="styles"/> 
-    <update handle="editor"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">   
     <body>
+      <referenceContainer name="left">
+            <block class="Tigren\BannerManager\Block\Adminhtml\Block\Edit\Tabs" name="tigren_bannermanager_block_edit_tabs"/>
+        </referenceContainer>
         <referenceContainer name="content">
-            <uiComponent name="tigren_bannermanager_block_form"/>
+            <block class="Tigren\BannerManager\Block\Adminhtml\Block\Edit" name="tigren_bannermanager_block_edit"/>
         </referenceContainer>
     </body>
 </page>
+
+ 

@@ -17,7 +17,9 @@ class NewAction extends \Magento\Backend\App\Action
     public function execute()
     {
         // chuyển hướng trang
+        
         $resultForward = $this->resultForwardFactory->create();
         return $resultForward->forward('edit');
     }
+
 }

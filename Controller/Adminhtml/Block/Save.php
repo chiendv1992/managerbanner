@@ -1,76 +1,50 @@
 <?php
+ 
 namespace Tigren\BannerManager\Controller\Adminhtml\Block;
-
-use Magento\Backend\App\Action;
-use Tigren\BannerManager\Model\Block;
-use Magento\Framework\App\Request\DataPersistorInterface;
-
-class Save extends \Magento\Backend\App\Action
+ 
+use Tigren\BannerManager\Controller\Adminhtml\Block;
+ 
+class Save extends Block
 {
-   
-    const ADMIN_RESOURCE = 'Tigren_BannerManager::save';
-
-    protected $dataProcessor;
-
-    protected $dataPersistor;
-
-    public function __construct(
-        Action\Context $context,
-        PostDataProcessor $dataProcessor,
-        DataPersistorInterface $dataPersistor        
-    ) {
-        $this->dataProcessor = $dataProcessor;
-        $this->dataPersistor = $dataPersistor;
-        parent::__construct($context);
-    }
-
-    public function execute()
-    {
-        $data = $this->getRequest()->getPostValue();
-        $resultRedirect = $this->resultRedirectFactory->create();
-        if ($data) {
-            
-            if (isset($data['is_active']) && $data['is_active'] === 'true') {
-                $data['is_active'] = Block::STATUS_ENABLED;
+   /**
+     * @return void
+     */
+   public function execute()
+   {
+      $isPost = $this->getRequest()->getPost();
+ 
+      if ($isPost) {
+         $newsModel = $this->_newsFactory->create();
+         $blockId = $this->getRequest()->getParam('block_id');
+ 
+         if ($blockId) {
+            $newsModel->load($blockId);
+         }
+         $formData = $this->getRequest()->getParam('block');
+         $newsModel->setData($formData);
+         
+         try {
+            // Save news
+            $newsModel->save();
+ 
+            // Display success message
+            $this->messageManager->addSuccess(__('The block has been saved.'));
+ 
+            // Check if 'Save and Continue'
+            if ($this->getRequest()->getParam('back')) {
+               $this->_redirect('*/*/edit', ['block_id' => $newsModel->getId(), '_current' => true]);
+               return;
             }
-            if (empty($data['block_id'])) {
-                $data['block_id'] = null;
-            }
-            
-
-            $model = $this->_objectManager->create('Tigren\BannerManager\Model\Block');
-            // lấy dc data đăng
-            $id = $this->getRequest()->getParam('block_id');
-            if ($id) {
-                $model->load($id);
-            }
-           
-            // Validate data (dl đưa ra form)
-            if (!$this->dataProcessor->validateRequireEntry($data)) {
-                return $resultRedirect->setPath('*/*/edit', ['block_id' => $model->getId(), '_current' => true]);
-            }
-            // Update model
-            $model->setData($data);
-            // lưu dữ liệu vào database
-            try 
-            {
-                $model->save();
-                $this->messageManager->addSuccess(__('You saved the block.'));
-                $this->dataPersistor->clear('manager_block');
-                if ($this->getRequest()->getParam('back')) 
-                {
-                    return $resultRedirect->setPath('*/*/edit', ['block_id' => $model->getId(), '_current' => true]);
-                }
-                return $resultRedirect->setPath('*/*/');
-            } 
-            catch (\Exception $e) 
-            {
-                $this->messageManager->addException($e, __('Something went wrong while saving the block.'));
-            }
-
-            $this->dataPersistor->set('manager_block', $data);
-            return $resultRedirect->setPath('*/*/edit', ['block_id' => $this->getRequest()->getParam('block_id')]);
-        }
-        return $resultRedirect->setPath('*/*/');
-    }
+ 
+            // Go to grid page
+            $this->_redirect('*/*/');
+            return;
+         } catch (\Exception $e) {
+            $this->messageManager->addError($e->getMessage());
+         }
+ 
+         $this->_getSession()->setFormData($formData);
+         $this->_redirect('*/*/edit', ['block_id' => $blockId]);
+      }
+   }
 }

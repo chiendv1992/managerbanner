@@ -26,7 +26,7 @@ class InstallSchema implements InstallSchemaInterface
 
         $installer->startSetup();
 
-        $table = $installer->getConnection()->newTable(
+    $table = $installer->getConnection()->newTable(
             $installer->getTable('manager_block')
         )->addColumn(
             'block_id',
@@ -106,9 +106,6 @@ class InstallSchema implements InstallSchemaInterface
             null,
             ['unsigned' => true, 'nullable' => false, 'primary' => true],
             'Customer Group ID'
-        )->addIndex(
-            $installer->getIdxName('block_customer_group', ['customer_group_id']),
-            ['customer_group_id']
         )->addForeignKey(
             $installer->getFkName('block_customer_group', 'block_id', 'manager_block', 'block_id'),
             'block_id',
@@ -143,9 +140,6 @@ class InstallSchema implements InstallSchemaInterface
             null,
             ['unsigned' => true, 'nullable' => false, 'primary' => true],
             'Store ID'
-        )->addIndex(
-            $installer->getIdxName('block_store', ['store_id']),
-            ['store_id']
         )->addForeignKey(
             $installer->getFkName('block_store', 'block_id', 'manager_block', 'block_id'),
             'block_id',
@@ -174,12 +168,6 @@ class InstallSchema implements InstallSchemaInterface
             null,
             ['identity' => true, 'nullable' => false, 'primary' => true],
             'Banner ID'
-        )->addColumn(
-            'block_id',
-            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
-            null,
-            ['nullable' => false, 'primary' => true],
-            'Block ID'
         )->addColumn(
             'title',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
@@ -223,12 +211,6 @@ class InstallSchema implements InstallSchemaInterface
             ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE],
             ' Modification Time'
         )->addColumn(
-            'is_active',
-            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
-            null,
-            ['nullable' => false, 'default' => '1'],
-            'Is  Active'
-        )->addColumn(
             'sort_order',
             \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
             null,
@@ -248,18 +230,45 @@ class InstallSchema implements InstallSchemaInterface
             ),
             ['title', 'image', 'url', 'taget'],
             ['type' => AdapterInterface::INDEX_TYPE_FULLTEXT]
-        )->addForeignKey(
-            $installer->getFkName('manager_banner', 'block_id', 'manager_block', 'block_id'),
-            'block_id',
-            $installer->getTable('manager_block'),
-            'block_id',
-            \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
         )->setComment(
             ' banner Table'
         );
         $installer->getConnection()->createTable($table);
 
 
+        $table = $installer->getConnection()->newTable(
+            $installer->getTable('block_banner')
+        )->addColumn(
+            'block_id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+            null,
+            ['nullable' => false, 'primary' => true],
+            'Block ID'
+        )->addColumn(
+            'banner_id',
+            \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+            null,
+            ['nullable' => false, 'primary' => true],
+            'Banner ID'
+        )->addIndex(
+            $installer->getIdxName('manager_banner', ['banner_id']),
+            ['banner_id']
+        )->addForeignKey(
+            $installer->getFkName('manager_block', 'block_id', 'manager_block', 'block_id'),
+            'block_id',
+            $installer->getTable('manager_block'),
+            'block_id',
+            \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+        )->addForeignKey(
+            $installer->getFkName('manager_banner', 'banner_id', 'manager_banner', 'banner_id'),
+            'banner_id',
+            $installer->getTable('manager_banner'),
+            'banner_id',
+            \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+        )->setComment(
+            ' Block Customer Table'
+        );
+        $installer->getConnection()->createTable($table);
         $installer->endSetup();
     }
 }
