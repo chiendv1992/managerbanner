@@ -24,6 +24,7 @@ class Edit extends Container
     protected function _construct()
     {
     	// tạo các button
+        // khởi tạo nguồn chỉnh sửa
         $this->_objectId = 'block_id';
         $this->_controller = 'adminhtml_block';
         $this->_blockGroup = 'Tigren_BannerManager';
@@ -49,10 +50,10 @@ class Edit extends Container
         );
         $this->buttonList->update('delete', 'label', __('Delete'));
     }
-     
+     // truy xuất cho title
     public function getHeaderText()
     {
-        $blockRegistry = $this->_coreRegistry->registry('bannermanager_block');
+        $blockRegistry = $this->_coreRegistry->registry('manager_block');
         if ($blockRegistry->getId()) {
             $blockTitle = $this->escapeHtml($blockRegistry->getTitle());
             return __("Edit Block '%1'", $blockTitle);
@@ -75,5 +76,16 @@ class Edit extends Container
         ";
  
         return parent::_prepareLayout();
+    }
+    // ktra hanh đ
+    protected function _isAllowedAction($resourceId)
+    {
+        return $this->_authorization->isAllowed($resourceId);
+    }
+    // tao url cho nút saveandcontinue
+    // 
+     protected function _getSaveAndContinueUrl()
+    {
+        return $this->getUrl('managerbanner/*/save', ['_current' => true, 'back' => 'edit', 'active_tab' => '']);
     }
 }

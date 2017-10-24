@@ -1,5 +1,4 @@
 <?php
-
 namespace Tigren\BannerManager\Block\Adminhtml\Block\Edit\Tab;
  
 use Magento\Backend\Block\Widget\Form\Generic;
@@ -8,20 +7,32 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
 use Magento\Cms\Model\Wysiwyg\Config;
+use Tigren\BannerManager\Helper;
+
+
  // Tập tin này sẽ khai báo các trường trong form
 class Info extends Generic implements TabInterface
 {
     protected $_wysiwygConfig;
-    
+    protected $_systemStore;
+    protected $_options;
+    protected $_helper;
+
     public function __construct(
         Context $context,
         Registry $registry,
         FormFactory $formFactory,
+        \Magento\Store\Model\System\Store $systemStore,
+        \Magento\Customer\Model\Customer\Attribute\Source\Group $options,
+        \Tigren\BannerManager\Helper\Data $helper,
         array $data = []
     ) {
        
-        parent::__construct($context, $registry, $formFactory, $data);
-           }
+        $this->_systemStore = $systemStore;
+        $this->_options = $options;
+        $this->_helper = $helper;
+        parent::__construct($context, $registry, $formFactory, $data, $systemStore, $options, $helper);
+        }
  
     protected function _prepareForm()
     {
@@ -59,60 +70,82 @@ class Info extends Generic implements TabInterface
                 'required'     => true
             ]
         );
-         $fieldset->addField(
-            'Store View',
-            'textarea',
+        // store view
+        if (!$this->_storeManager->isSingleStoreMode()) {
+            $field = $fieldset->addField(
+                'store_id',
+                'multiselect',
+                [
+                    'name' => 'stores[]',
+                    'label' => __('Store View'),
+                    'title' => __('Store View'),
+                    'required' => true,
+                    'values' => $this->_systemStore->getStoreValuesForForm(false, true)
+                ]
+            );
+            $renderer = $this->getLayout()->createBlock(
+                'Magento\Backend\Block\Store\Switcher\Form\Renderer\Fieldset\Element'
+            );
+            $field->setRenderer($renderer);
+        } else {
+            $fieldset->addField(
+                'store_id',
+                'hidden',
+                ['name' => 'stores[]', 'value' => $this->_storeManager->getStore(true)->getId()]
+            );
+            $model->setStoreId($this->_storeManager->getStore(true)->getId());
+        }
+        // customer group 
+        // $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        // $groupOptions = $objectManager->get('\Magento\Customer\Model\Customer\Attribute\Source\Group')->getAllOptions();
+        $fieldset->addField(
+            'customer_id',
+            'multiselect',
             [
-                'name'        => 'store_id',
-                'label'    => __('Store'),
-                'required'     => true,
-                'cols'  => '15',
-                'row'   =>'4'
-            ]
-        );
-         $fieldset->addField(
-            'customer',
-            'textarea',
-            [
-                'name'        => 'Customer',
+                'name'        => 'customer_id',
                 'label'    => __('Customer Group'),
-                'required'     => true
+                'required'     => true,                
+                // 'values' => $groupOptions,
+                'values'=> $this->_options->toOptionArray('customer_group_id','customer_group_code')               
             ]
         );
-         $fieldset->addField(
+        $fieldset->addField(
             'position',
             'select',
             [
                 'name'        => 'position',
                 'label'    => __('Block Position'),
                 'required'     => true,
+                'values'=> $this->_helper->getPositionOptions()               
             ]
         );
-         $fieldset->addField(
+        $fieldset->addField(
             'Category Type',
             'select',
             [
                 'name'        => 'type',
                 'label'    => __('Category Type'),
-                'required'     => true
-            ]
+                'required'     => true,
+                'values'=> $this->_helper->getDisplayTypeOptions()
+             ]
         );
-         $fieldset->addField(
+        $fieldset->addField(
             'display',
             'select',
             [
                 'name'        => 'display',
                 'label'    => __('Display Type'),
-                'required'     => true
+                'required'     => true,
+                'values'=> $this->_helper->getDisplayTypeOptions()
             ]
         );
-         $fieldset->addField(
+        $fieldset->addField(
             'creation_time',
             'date',
             [
                 'name'        => 'creation_time',
                 'label'    => __('From '),
-                'required'     => true,
+                'required'     => false,
                 'class' => __('validate-date'),
                 'date_format' => $dateFormat,
                 'time_format' => $timeFormat,
@@ -120,14 +153,14 @@ class Info extends Generic implements TabInterface
             ]
         );
         $fieldset->addField(
-            'time',
+            'update_time',
             'date',
             [
                 'name'        => 'update_time',
                 'label'    => __('To'),
                 'required'     => true,
                 'style' => $style,
-                'required' => true,
+                'required' => false,
                 'class' => __('validate-date'),
                 'date_format' => $dateFormat,
                 'time_format' => $timeFormat,
@@ -145,12 +178,12 @@ class Info extends Generic implements TabInterface
             ]
         );         
         $fieldset->addField(
-            'order',
+            'sort_order',
             'text',
             [
                 'name'        => 'sort_order',
                 'label'    => __('Sort Order'),
-                'required'     => true
+                'required'     => false
             ]
         );       
  

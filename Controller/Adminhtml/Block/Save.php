@@ -6,9 +6,6 @@ use Tigren\BannerManager\Controller\Adminhtml\Block;
  
 class Save extends Block
 {
-   /**
-     * @return void
-     */
    public function execute()
    {
       $isPost = $this->getRequest()->getPost();
