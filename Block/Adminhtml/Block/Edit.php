@@ -1,15 +1,12 @@
 <?php
- 
-// <!-- tạo tập tin block của container form -->
-
 namespace Tigren\BannerManager\Block\Adminhtml\Block;
- 
+
 use Magento\Backend\Block\Widget\Form\Container;
 use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Registry;
  
 class Edit extends Container
-{
+{// <!-- tạo tập tin block của container form -->
     protected $_coreRegistry = null;
  
     public function __construct(
@@ -31,7 +28,7 @@ class Edit extends Container
  
         parent::_construct();
  
-        $this->buttonList->update('save', 'label', __('Save'));
+        $this->buttonList->update('save', 'label', __('Save Block'));
         $this->buttonList->add(
             'saveandcontinue',
             [
@@ -50,9 +47,11 @@ class Edit extends Container
         );
         $this->buttonList->update('delete', 'label', __('Delete'));
     }
+
      // truy xuất cho title
     public function getHeaderText()
     {
+
         $blockRegistry = $this->_coreRegistry->registry('manager_block');
         if ($blockRegistry->getId()) {
             $blockTitle = $this->escapeHtml($blockRegistry->getTitle());

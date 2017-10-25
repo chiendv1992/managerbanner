@@ -75,11 +75,11 @@
             ]
         );
         $this->addColumn(
-                'block_id',
+                'banner_id',
                 [
                     'header' => __('ID'),
                     'sortable' => true,
-                    'index' => 'block_id',
+                    'index' => 'banner_id',
                     'header_css_class' => 'col-id',
                     'column_css_class' => 'col-id'
                 ]

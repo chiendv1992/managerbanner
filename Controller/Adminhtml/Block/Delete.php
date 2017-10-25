@@ -11,7 +11,7 @@ class Delete extends \Magento\Backend\App\Action
         $id = $this->getRequest()->getParam('block_id');
 
         $resultRedirect = $this->resultRedirectFactory->create();
-        if ($id) {
+        if ($id) { 
             try {
                 // Init model and delete
                 $model = $this->_objectManager->create('Tigren\BannerManager\Model\Block');
@@ -31,7 +31,7 @@ class Delete extends \Magento\Backend\App\Action
                 return $resultRedirect->setPath('*/*/edit', ['block_id' => $id]);
             }
         }
-
+ 
         // Display error message
         $this->messageManager->addError(__('We can\'t find a block to delete.'));
 

@@ -5,6 +5,7 @@ class NewAction extends \Magento\Backend\App\Action
 {
     // dùng trong phân quyền
     // const ADMIN_RESOURCE = 'Tigren_BannerManager::save';
+
     protected $resultForwardFactory;
 
     public function __construct(

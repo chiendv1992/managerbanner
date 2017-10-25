@@ -6,7 +6,6 @@ use Magento\Backend\Block\Widget\Tab\TabInterface;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Registry;
 use Magento\Framework\Data\FormFactory;
-use Magento\Cms\Model\Wysiwyg\Config;
 use Tigren\BannerManager\Helper;
 
 
@@ -36,13 +35,13 @@ class Info extends Generic implements TabInterface
  
     protected function _prepareForm()
     {
-    // manager_block ben controller edit.php
+        // manager_block ben controller edit.php
         $model = $this->_coreRegistry->registry('manager_block');
  
         $form = $this->_formFactory->create();
         $form->setHtmlIdPrefix('block_');
         $form->setFieldNameSuffix('block');
-//kt date-time
+        //kt date-time
         $dateFormat = 'M/d/yy';
         $timeFormat = 'h:mm a';
         $dateTimeFormat = 'M/d/yy h:mm a';
@@ -106,7 +105,7 @@ class Info extends Generic implements TabInterface
                 'label'    => __('Customer Group'),
                 'required'     => true,                
                 // 'values' => $groupOptions,
-                'values'=> $this->_options->toOptionArray('customer_group_id','customer_group_code')               
+                'values'=> $this->_options->toOptionArray()               
             ]
         );
         $fieldset->addField(
@@ -120,13 +119,13 @@ class Info extends Generic implements TabInterface
             ]
         );
         $fieldset->addField(
-            'Category Type',
+            'category',
             'select',
             [
                 'name'        => 'type',
                 'label'    => __('Category Type'),
                 'required'     => true,
-                'values'=> $this->_helper->getDisplayTypeOptions()
+                'values'=> $this->_helper->getCategoryOptions()
              ]
         );
         $fieldset->addField(

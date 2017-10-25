@@ -4,10 +4,14 @@ namespace Tigren\BannerManager\Helper;
 use Magento\Customer\Model\Session as CustomerSession;
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+     protected $_categoryCollectionFactory;
+
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context
+        \Magento\Framework\App\Helper\Context $context,
+        \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollectionFactory
     )
     {
+        $this->_categoryCollectionFactory = $categoryCollectionFactory;
         parent::__construct($context);
 
     }
@@ -127,5 +131,25 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         ];
     }
 
- 
+    public function getCategoryOptions()
+    {
+        $categoriesArray = $this->_categoryCollectionFactory->create()
+            ->addAttributeToSelect('name')
+            ->addAttributeToSort('path', 'asc')
+            ->load()
+            ->toArray();
+
+        $categories = array();
+        foreach ($categoriesArray as $categoryId => $category) {
+            if (isset($category['name']) && isset($category['level'])) {
+                $categories[] = array(
+                    'label' => $category['name'],
+                    'level' => $category['level'],
+                    'value' => $categoryId,
+                );
+            }
+        }
+
+        return $categories;
+    }
 }

@@ -4,6 +4,6 @@
 	   <add id="Tigren_BannerManager::managerbanner" title="Manager Banner" module="Tigren_BannerManager" sortOrder="51" resource="Tigren_BannerManager::managerbanner"/>
 	   <add id="Tigren_BannerManager::manager" title="Manager" module="Tigren_BannerManager" sortOrder="10" resource="Tigren_BannerManager::manager" parent="Tigren_BannerManager::manager"/>
 	   <add id="Tigren_BannerManager::block" title="Blocks" module="Tigren_BannerManager" sortOrder="99" parent="Tigren_BannerManager::managerbanner" action="bannermanager/block/index" resource="Tigren_BannerManager::block"/>
-	   <add id="Tigren_BannerManager::banner" title="Banner" module="Tigren_BannerManager" sortOrder="99" parent="Tigren_BannerManager::managerbanner" action="adminhtml/banner" resource="Tigren_BannerManager::banner"/>
+	   <add id="Tigren_BannerManager::banner" title="Banner" module="Tigren_BannerManager" sortOrder="99" parent="Tigren_BannerManager::managerbanner" action="bannermanager/banner/index" resource="Tigren_BannerManager::banner"/>
     </menu>
 </config>

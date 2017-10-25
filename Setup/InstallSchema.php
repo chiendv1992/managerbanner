@@ -53,6 +53,12 @@ class InstallSchema implements InstallSchemaInterface
             [],
             'Block Content'
         )->addColumn(
+            'category',
+            \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+            255,
+            ['nullable' => false],
+            'Block  Category Type'
+        )->addColumn(
             'sort_order',
             \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             255,

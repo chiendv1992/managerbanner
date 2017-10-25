@@ -6,11 +6,11 @@ use Magento\Framework\DataObject\IdentityInterface;
 
 class Block extends \Magento\Framework\Model\AbstractModel implements IdentityInterface
 {
-    const CACHE_TAG = 'block_grid';
+    const CACHE_TAG = 'manager_block';
     
-    protected $_cacheTag = 'block_grid';
+    protected $_cacheTag = 'manager_block';
 
-    protected $_eventPrefix = 'block_grid';
+    protected $_eventPrefix = 'manager_block';
 
     protected function _construct()
     {

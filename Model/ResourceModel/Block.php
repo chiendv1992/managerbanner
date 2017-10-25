@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 namespace Tigren\BannerManager\Model\ResourceModel;
 
 use Tigren\BannerManager\Api\Data\BlockInterface;
@@ -16,25 +12,55 @@ use Magento\Framework\Model\ResourceModel\Db\Context;
 
 class Block extends AbstractDb
 {
-   protected function _construct()
+    protected function _construct()
     {
         // Table name + primary key column
-        $this->_init('manager_block', 'block_id');
+        $this->_init('manager_block','block_id');
+    }
+    // load store view cho block
+    protected function _afterLoad(AbstractModel $object)
+    {
+        $block_store=$this->getConnection()
+            ->select()
+            ->from($this->getMainTable('block_store'),['block_id'])
+            ->where('block_id'.' = :block_id');
+        $stores=$this->getConnection()->fetchCol($block_store,[':block_id'=>$object->getID()]);
+        if($stores)
+        {
+            $object->setData('stores',$stores);
+        }
+        return parent::_afterLoad($object);
+    }
+    // lấy lại id của block
+    public function getCmsPageIdentifierById($id)
+    {
+        $connection = $this->getConnection();
+        $entityMetadata = $this->metadataPool->getMetadata(PageInterface::class);
+
+        $select = $connection->select()
+            ->from($this->getMainTable(), 'identifier')
+            ->where($entityMetadata->getIdentifierField() . ' = :block_id');
+
+        return $connection->fetchOne($select, ['block_id' => (int)$id]);
     }
 
-    protected function _afterSave(\Magento\Framework\Model\AbstractModel $object)
+// get id store
+    public function lookupStoreIds($pageId)
     {
-        // Get image data before and after save
-        $oldImage = $object->getOrigData('image');
-        $newImage = $object->getData('image');
+        $connection = $this->getConnection();
 
-        // Check when new image uploaded
-        if ($newImage != null && $newImage != $oldImage) {
-            $imageUploader = \Magento\Framework\App\ObjectManager::getInstance()
-                ->get('Tigren\BannerManager\BannerBlockImageUpload');
-            $imageUploader->moveFileFromTmp($newImage);
-        }
+        $entityMetadata = $this->metadataPool->getMetadata(PageInterface::class);
+        $linkField = $entityMetadata->getLinkField();
 
-        return $this;
+        $select = $connection->select()
+            ->from(['managerblocks' => $this->getTable('block_store')], 'store_id')
+            ->join(
+                ['managerblock' => $this->getMainTable()],
+                'managerblocks.' . $linkField . ' = managerblock.' . $linkField,
+                []
+            )
+            ->where('managerblock.' . $entityMetadata->getIdentifierField() . ' = :block_id');
+
+        return $connection->fetchCol($select, ['block_id' => (int)$pageId]);
     }
 }
