@@ -1,16 +1,17 @@
 <?php
- 
 namespace Tigren\BannerManager\Controller\Adminhtml\Block;
  
 use Magento\Backend\App\Action;
-use Magento\TestFramework\ErrorLog\Logger;
+use Magento\Catalog\Controller\Adminhtml\Product;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\App\Request\DataPersistorInterface;
+use Tigren\BannerManager\Controller\Adminhtml\Block;
+
  
 class Save extends \Magento\Backend\App\Action
 {
    
     protected $cacheTypeList;
- 
-    
  
     public function __construct(
         Action\Context $context,
@@ -29,29 +30,25 @@ class Save extends \Magento\Backend\App\Action
  
     public function execute()
     {
-        $data = $this->getRequest()->getPostValue();      
+       $data = $this->getRequest()->getPostValue();
+
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
-           
+
             $model = $this->_objectManager->create('Tigren\BannerManager\Model\Block');
- 
-            $block_id = $this->getRequest()->getParam('block_id');
-            if ($block_id) {
-                $model->load($block_id);
+
+            $id = $this->getRequest()->getParam('block_id');
+            if ($id) {
+                $model->load($id);
             }
- 
+
             $model->setData($data);
- 
-            // $this->_eventManager->dispatch(
-            //     'manager_block',
-            //     ['block' => $model, 'request' => $this->getRequest()]
-            // );
 
             try {
                 $model->save();
+                $this->saveProducts($model, $data);
 
-                // $this->cacheTypeList->invalidate('full_page');
-                $this->messageManager->addSuccess(__('You saved this Block.'));
+                $this->messageManager->addSuccess(__('You saved this block.'));
                 $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath('*/*/edit', ['block_id' => $model->getId(), '_current' => true]);
@@ -62,11 +59,11 @@ class Save extends \Magento\Backend\App\Action
             } catch (\RuntimeException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addException($e, __('Something went wrong while saving the Block.'));
+                $this->messageManager->addException($e, __('Something went wrong while saving the block.'));
             }
- 
+
             $this->_getSession()->setFormData($data);
-            return $resultRedirect->setPath('*/*/edit',['block_id' => $this->getRequest()->getParam('block_id')]);
+            return $resultRedirect->setPath('*/*/edit', ['block_id' => $this->getRequest()->getParam('block_id')]);
         }
         return $resultRedirect->setPath('*/*/');
     }

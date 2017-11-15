@@ -3,7 +3,7 @@ namespace Tigren\BannerManager\Controller\Adminhtml\Block;
 
 class Index extends \Magento\Backend\App\Action
 {
-	protected $resultPageFactory = false;
+	protected $resultPageFactory;
 	public function __construct(
 		\Magento\Backend\App\Action\Context $context,
 		\Magento\Framework\View\Result\PageFactory $resultPageFactory

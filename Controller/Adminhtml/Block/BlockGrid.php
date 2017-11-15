@@ -15,7 +15,7 @@
         public function execute()
         {
             $resultLayout = $this->resultLayoutFactory->create();
-            $resultLayout->getLayout()->getBlock('managerbanner.block.edit.tab.main');
+            $resultLayout->getLayout()->getBlock('managerbanner.block.edit.blocks')->setInBanner($this->getRequest()->getPost('manager_block', null));
             return $resultLayout;
         }
  

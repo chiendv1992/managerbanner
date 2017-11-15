@@ -123,13 +123,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         ];
     }
     // Tagert 
-     public function getTargetOptions()
-    {
-        return [
-            ['value' => 0, 'label' => __('Open in the same window')],
-            ['value' => 1, 'label' => __('Open in new window')]
-        ];
-    }
+    //  public function getTargetOptions()
+    // {
+    //     return [
+    //         ['value' => 0, 'label' => __('Open in the same window')],
+    //         ['value' => 1, 'label' => __('Open in new window')]
+    //     ];
+    // }
 
     public function getCategoryOptions()
     {
@@ -151,5 +151,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return $categories;
+    }
+    public function getBlocksGridUrl()
+    {
+        return $this->_backendUrl->getUrl('tigren/bannermanager/blocks', ['_current' => true]);
     }
 }

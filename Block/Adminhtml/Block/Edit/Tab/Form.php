@@ -1,4 +1,5 @@
 <?php
+
 namespace Tigren\BannerManager\Block\Adminhtml\Block\Edit\Tab;
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Backend\Block\Widget\Tab\TabInterface;
@@ -8,7 +9,7 @@ use Magento\Framework\Data\FormFactory;
 use Tigren\BannerManager\Helper;
 
 // Tệp này sẽ khai báo thông tin biểu mẫu
-class Info extends \Magento\Backend\Block\Widget\Form\Generic implements TabInterface
+class Form extends \Magento\Backend\Block\Widget\Form\Generic implements TabInterface
 {
 	
     protected $_systemStore;
@@ -34,7 +35,8 @@ class Info extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
      protected function _construct()
     {
         parent::_construct();
-        $this->setActive(true);
+        $this->setId('block_form');
+        $this->setTitle(__('Block Information'));
     }
     protected function _prepareForm()
     {
@@ -42,7 +44,8 @@ class Info extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
         $model = $this->_coreRegistry->registry('manager_block');
  
         $form = $this->_formFactory->create();
-      
+        $form->setHtmlIdPrefix('block_');
+        $form->setFieldNameSuffix('block');
         //kt date-time
         $dateFormat = 'M/d/yy';
         $timeFormat = 'h:mm a';
@@ -84,7 +87,9 @@ class Info extends \Magento\Backend\Block\Widget\Form\Generic implements TabInte
                     'values' => $this->_systemStore->getStoreValuesForForm(false, true)
                 ]
             );
-            $renderer = $this->getLayout()->createBlock('Magento\Backend\Block\Store\Switcher\Form\Renderer\Fieldset\Element');
+            $renderer = $this->getLayout()->createBlock(
+                'Magento\Backend\Block\Store\Switcher\Form\Renderer\Fieldset\Element'
+            );
             $field->setRenderer($renderer);
         } else {
             $fieldset->addField(

@@ -1,23 +1,13 @@
 <?xml version="1.0"?>
-
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Tigren_BannerManager::banner_manager" title="Block" translate="title" sortOrder="10">
-                    <resource id="Tigren_BannerManager::save" title="Save Block" translate="title" sortOrder="10" />
-                    <resource id="Tigren_BannerManager::delete" title="Delete Block" translate="title" sortOrder="20" />
-                </resource>
-            </resource>
-        </resources>
-    </acl>
-    <acl>
-        <resources>
-            <resource id="Magento_Backend::admin">
-                <resource id="Tigren_BannerManager::banner_manager" title="Banner" translate="title" sortOrder="10">
-                    <resource id="Tigren_BannerManager::save" title="Save Banner" translate="title" sortOrder="10" />
-                    <resource id="Tigren_BannerManager::delete" title="Delete Banner" translate="title" sortOrder="20" />
-                </resource>
+                   <resource id="Tigren_BannerManager::block" title="Block Manager">
+                        <resource id="Tigren_BannerManager::block_create" title="Create"/>
+                        <resource id="Tigren_BannerManager::block_edit" title="Edit" />
+                        <resource id="Tigren_BannerManager::block_delete" title="Delete"/>
+                    </resource>
             </resource>
         </resources>
     </acl>

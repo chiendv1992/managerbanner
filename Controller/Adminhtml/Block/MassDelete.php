@@ -19,7 +19,6 @@ class MassDelete extends \Magento\Backend\App\Action
 
     public function execute()
     {
-
         $collection = $this->filter->getCollection($this->collectionFactory->create());
         $collectionSize = $collection->getSize();
 

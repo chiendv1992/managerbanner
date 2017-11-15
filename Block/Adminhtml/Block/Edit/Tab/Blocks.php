@@ -1,8 +1,7 @@
 <?php
-  
-    namespace Tigren\Bannermanager\Block\Adminhtml\Block\Edit\Tab;
+  namespace Tigren\Bannermanager\Block\Adminhtml\Block\Edit\Tab;
  
-    class Main extends \Magento\Backend\Block\Widget\Grid\Extended
+    class Blocks extends \Magento\Backend\Block\Widget\Grid\Extended
     {
         protected $blockFactory;
  
@@ -24,10 +23,12 @@
         protected function _construct()
         {
             parent::_construct();
-            $this->setId('block_tab_main');
+            $this->setId('block_edit_blocks');
             $this->setDefaultSort('entity_id');
             $this->setUseAjax(true);
-            $this->setDefaultFilter(array('in_blocks'=>1)); // By default we have added a filter for the rows, that in_products value to be 1
+             if ($this->getRequest()->getParam('block_id')) {
+            $this->setDefaultFilter(array('in_product' => 1));
+        } // By default we have added a filter for the rows, that in_products value to be 1
             $this->setSaveParametersInSession(false);  //Dont save paramters in session or else it creates problems 
         }
 
@@ -150,7 +151,7 @@
         }
         public function getGridUrl()
         {
-            return $this->getUrl('block/*/mainGrid', ['_current' => true]);
+            return $this->getUrl('block/*/blockgrid', ['_current' => true]);
         }
-         
-    }
+        
+}

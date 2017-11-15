@@ -1,48 +1,42 @@
 <?php
- 
 namespace Tigren\BannerManager\Block\Adminhtml\Block\Edit;
- 
-use Magento\Backend\Block\Widget\Tabs as WidgetTabs;
- // <!-- sẽ khai báo các tab ở cột bên trái của trang chỉnh sửa -->
 
-class Tabs extends WidgetTabs
+class Tabs extends \Magento\Backend\Block\Widget\Tabs
 {
-  
+    
     protected function _construct()
     {
         parent::_construct();
-        $this->setId('block_edit_tabs');
+        $this->setId('block_tabs');
         $this->setDestElementId('edit_form');
-        $this->setTitle(__('Block'));
+        $this->setTitle(__('Block Information'));
     }
- 
+
     protected function _beforeToHtml()
     {
-        // theem tab Block infomation
+        $this->setActiveTab('block_info');
+        return parent::_beforeToHtml();
+    }
+
+    protected function _prepareLayout()
+    {
         $this->addTab(
             'block_info',
             [
                 'label' => __('Block Information'),
-                'title' => __('Block Information'),
-                'content' => $this->getLayout()->createBlock(
-                    'Tigren\BannerManager\Block\Adminhtml\Block\Edit\Tab\Info'
-                )->toHtml(),
-                'active' => true
+                'content' => $this->getLayout()->createBlock('Tigren\BannerManager\Block\Adminhtml\Block\Edit\Tab\Info')->toHtml()
             ]
         );
-        //  thêm tab slect banner
+
         $this->addTab(
-            'block_main',
+            'select_banner',
             [
                 'label' => __('Select Banner'),
-                'title' => __('Select Banner'),
-                'content' => $this->getLayout()->createBlock(
-                    'Tigren\BannerManager\Block\Adminhtml\Block\Edit\Tab\Main'
-                )->toHtml(),
-                'active' => false
+                'content' => $this->getLayout()->createBlock('Tigren\BannerManager\Block\Adminhtml\Block\Edit\Tab\Bannerselect')->toHtml()
             ]
         );
- 
-        return parent::_beforeToHtml();
+
+        
+        return parent::_prepareLayout();
     }
 }
